@@ -125,3 +125,42 @@ def add_course():
         db.session.add(new_c)
         db.session.commit()
         return redirect('/courses')
+
+    
+    @app.route('/course/<int:cid>')
+def course_details(cid):
+    data = Course.query.filter_by(course_id=cid).first()
+    sd_i = Enroll.query.filter_by(ecourse_id=cid).all()
+    sd = []
+    [sd.append(Student.query.filter_by(student_id=r.estudent_id).one())
+     for r in sd_i]
+    return render_template("course.html", cd=data, student=sd)
+
+
+@app.route('/course/<int:cid>/update', methods=["GET", "POST"])
+def update_course(cid):
+    if request.method == "GET":
+        data = Course.query.filter_by(course_id=cid).first()
+        return render_template("update_c.html", c_d=data)
+    else:
+        new = Course.query.filter_by(course_id=cid).first()
+        new.course_name = request.form["c_name"]
+        new.course_description = request.form["desc"]
+
+        db.session.commit()
+        return redirect('/courses')
+
+
+@app.route("/course/<int:cid>/delete")
+def del_course(cid):
+    data = Course.query.filter_by(course_id=cid).first()
+    en = Enroll.query.filter_by(ecourse_id=cid).all()
+    db.session.delete(data)
+    [db.session.delete(i) for i in en]
+    db.session.commit()
+
+    return redirect('/')
+
+
+if __name__ == '__main__':
+    app.run()
