@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='test.css')}}" }>
+</head>
+
+<body>
+    <h1 style="text-align: center;">Student Details</h1>
+    <table id="student-detail">
+        <tr>
+            <th>Roll Number</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+        </tr>
+        <tr>
+            <th>{{s_d["roll_number"]}}</th>
+            <th>{{s_d["first_name"]}}</th>
+            <th>{{s_d["last_name"]}}</th>
+        </tr>
+    </table>
+    {% if s_d.courses|length > 0 %}
+    <h1 style="text-align: center;">Enrollment List</h1>
+    <table id="student-enrollments">
+        <tr>
+            <th>S. No.</th>
+            <th>Course Code</th>
+            <th>Course Name</th>
+            <th>Course Description</th>
+            <th>Actions</th>
+        </tr>
+        {% for col in s_d["courses"] %}
+        <tr>
+            <td>{{col["course_id"]}}</td>
+            <td>{{col["course_code"]}}</td>
+            <td>{{col["course_name"]}}</td>
+            <td>{{col["course_description"]}}</td>
+            <td>
+                <a href="/student/{{s_d.student_id}}/withdraw/{{col.course_id}}">Withdraw</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <a href="/" class="centre">Go Back</a>
+</body>
+
+</html>
