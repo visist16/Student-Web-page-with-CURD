@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='test.css')}}" }>
+</head>
+
+<body>
+    <h1>Courses list<a href="/" style="margin-left: 75%;">Go to Students</a></h1>
+    {% if cd|length == 0 %}
+    No courses found. Add the courses now!<br>
+    {% else %}
+    <table id="all-courses">
+        <tr>
+            <th>SNo</th>
+            <th>Course Code</th>
+            <th>Course Name</th>
+            <th>Course Description</th>
+            <th>Actions</th>
+        </tr>
+        {% for i in cd %}
+        <tr>
+            <td>{{i.course_id}}</td>
+            <td><a href="/course/{{i.course_id}}">{{i.course_code}}</a></td>
+            <td>{{i.course_name}}</td>
+            <td>{{i.course_description}}</td>
+            <td>
+                <a href="/course/{{i.course_id}}/update">Update</a>
+                <a href="/course/{{i.course_id}}/delete">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <a href='/course/create' class="centre">+ Add Course</a>
+</body>
+
+</html>
